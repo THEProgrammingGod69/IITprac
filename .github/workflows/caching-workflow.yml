@@ -1,0 +1,33 @@
+name: Caching Assignment Workflow
+
+on:
+  push:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Check out repository code
+      uses: actions/checkout@v4
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20'
+
+    - name: Cache NPM dependencies
+      id: cache-npm
+      uses: actions/cache@v4
+      with:
+        path: ~/.npm
+        key: cache-29897bb
+
+    - name: Install Dependencies if cache was missed
+      if: steps.cache-npm.outputs.cache-hit != 'true'
+      run: npm install
+
+    # This is the step the assignment requires
+    - name: prime-cache-29897bb
+      run: echo "Cache hit status was: ${{ steps.cache-npm.outputs.cache-hit }}"
