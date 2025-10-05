@@ -1,0 +1,34 @@
+name: Prime cache
+
+on:
+  push:            # runs on every push
+  workflow_dispatch: # also able to run manually
+
+jobs:
+  prime:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      # Create a small file so there is something to cache (this ensures the cache can be saved)
+      - name: Create dummy dependency
+        run: |
+          mkdir -p node_modules
+          echo "primed at $(date -u)" > node_modules/primed.txt
+
+      - name: Restore / Save cache
+        id: cache
+        uses: actions/cache@v4
+        with:
+          path: node_modules
+          key: cache-29897bb
+
+      - name: prime-cache-29897bb
+        run: |
+          echo "Cache hit? ${{ steps.cache.outputs.cache-hit }}"
+          if [ "${{ steps.cache.outputs.cache-hit }}" = "true" ]; then
+            echo "Cache was HIT"
+          else
+            echo "Cache was a MISS — the job has primed the cache now."
+          fi
