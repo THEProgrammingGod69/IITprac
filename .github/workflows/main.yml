@@ -1,0 +1,16 @@
+name: Assignment Verification
+
+# This tells GitHub to run the action on any push to the main branch
+on:
+  push:
+    branches: [ "main" ]
+  workflow_dispatch: # This lets you run it manually from the Actions tab
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      # This is the specific step your assignment is looking for.
+      # The name must match your email address exactly.
+      - name: 24f3002320@ds.study.iitm.ac.in
+        run: echo "Hello, world!"
